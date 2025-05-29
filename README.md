@@ -1,10 +1,30 @@
-# go-webapp-sample
+pipeline {
+  agent any
+  tools {
+      go 'gotest'
+  }
+  environment {
+      GO111MODULE='on'
+  }
+  
+  stages {
+    stage('Test') {
+      steps {
+        git 'https://github.com/vipul-32/ci-cd-demo.git'
+        sh 'go test ./...'
+      }
+    }
+    stage('Build') {
+        steps {
+        git 'https://github.com/vipul-32/ci-cd-demo.git'
+        sh 'go build .'
+        }
+    }
+    stage('Run') {
+        steps {
+            sh 'cd /var/lib/jenkins/workspace/full-cicd-goto && go-webapp-sample &'
+        }
+    }
 
-
-
-## Preface
-This repository is the sample of web application using golang.
-Test version 1
-Hello this is second edit.
-Hi, this is third change that I did.
-Next Edit.
+  }
+}
